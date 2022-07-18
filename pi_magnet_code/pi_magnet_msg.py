@@ -5,6 +5,7 @@ import json
 
 from azure.iot.device import IoTHubDeviceClient, Message
 
+# Replace with the corresponding connection string from your device in Az IoT Hub
 CONNECTION_STRING = "HostName=stg-iot-ws-hub.azure-devices.net;DeviceId=raspberry_pi_stg;SharedAccessKey=zI7H5DOYX8ocxVUuLX40UUkrCLCSxuHccoUnQ2PRv10="
 
 # Set Broadcom mode so we can address GPIO pins by number.
@@ -13,7 +14,7 @@ io.setmode(io.BCM)
 wheelpin = 18
 io.setup(wheelpin, io.IN, pull_up_down=io.PUD_UP) 
 
-# Define the JSON message to send to IoT Hub.
+# Define the JSON message variables to send to IoT Hub.
 messageEpoch = time.time()
 deviceID = "Raspberry_PI_STG"
 magnet = 0
@@ -29,13 +30,15 @@ def iothub_client_telemetry_sample_run():
         client = iothub_client_init()
         print ( "IoT Hub device sending periodic messages, press Ctrl-C to exit" )
         while True:
-            # Build the message with simulated telemetry values.
+            # Build the message with magnet telemetry values.
             messageEpoch = time.time()
             magnet = 0
             if (io.input(wheelpin) == 0):
                 magnet = 1
+            # needs to be a python dict, otherwsie de-serialization errors will occur on Azure side
             msg_dict = {"messageEpoch":messageEpoch, "deviceID":deviceID, "magnet":magnet, "pin_num":wheelpin}
             message = Message(json.dumps(msg_dict))
+            # ensure proper encoding and content type are enforced (again to avoid de-serialization issues)
             message.content_encoding = "utf-8"
             message.content_type = "application/json"
 
