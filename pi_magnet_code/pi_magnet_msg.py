@@ -17,7 +17,6 @@ io.setup(wheelpin, io.IN, pull_up_down=io.PUD_UP)
 messageEpoch = time.time()
 deviceID = "Raspberry_PI_STG"
 magnet = 0
-MSG_TXT = '{{"messageEpoch": {msg_epoch},"deviceID": {dev_id},"magnet": {magnet},"pinNum": {pin_num}}}'
 
 def iothub_client_init():
     # Create an IoT Hub client
@@ -35,8 +34,8 @@ def iothub_client_telemetry_sample_run():
             magnet = 0
             if (io.input(wheelpin) == 0):
                 magnet = 1
-            msg_txt_formatted = MSG_TXT.format(msg_epoch=messageEpoch, dev_id=deviceID, magnet=magnet, pin_num=wheelpin)
-            message = Message(json.dumps(msg_txt_formatted))
+            msg_dict = {"messageEpoch":messageEpoch, "deviceID":deviceID, "magnet":magnet, "pin_num":wheelpin}
+            message = Message(json.dumps(msg_dict))
             message.content_encoding = "utf-8"
             message.content_type = "application/json"
 
