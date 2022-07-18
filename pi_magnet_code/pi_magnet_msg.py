@@ -36,7 +36,8 @@ def iothub_client_telemetry_sample_run():
             if (io.input(wheelpin) == 0):
                 magnet = 1
             msg_txt_formatted = MSG_TXT.format(msg_epoch=messageEpoch, dev_id=deviceID, magnet=magnet, pin_num=wheelpin)
-            msg_json = json.dumps(msg_txt_formatted)
+            json_dump = json.dumps(msg_txt_formatted)
+            msg_json = json.loads(json_dump)
             message = Message(msg_json)
 
             # Send the message.
