@@ -6,7 +6,7 @@ import json
 from azure.iot.device import IoTHubDeviceClient, Message
 
 # Replace with the corresponding connection string from your device in Az IoT Hub
-CONNECTION_STRING = "HostName=stg-iot-ws-hub.azure-devices.net;DeviceId=raspberry_pi_stg;SharedAccessKey=zI7H5DOYX8ocxVUuLX40UUkrCLCSxuHccoUnQ2PRv10="
+CONNECTION_STRING = "Paste_your_conn_str_here"
 
 # Set Broadcom mode so we can address GPIO pins by number.
 io.setmode(io.BCM)
@@ -16,7 +16,7 @@ io.setup(wheelpin, io.IN, pull_up_down=io.PUD_UP)
 
 # Define the JSON message variables to send to IoT Hub.
 messageEpoch = time.time()
-deviceID = "Raspberry_PI_STG"
+deviceID = "Type_your_deviceID_here"
 magnet = 0
 
 def iothub_client_init():
